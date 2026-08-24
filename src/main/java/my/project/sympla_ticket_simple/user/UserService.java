@@ -18,7 +18,7 @@ public class UserService {
     public UserResponseDTO createUser(UserRequestDTO userRequestDTO){
 
         if(userRepository.existsByEmail(userRequestDTO.email())){
-            throw new UserException("O email ja está sendo usado por outro usuario!");
+            throw new EmailAlreadyInUseException("O email ja está sendo usado por outro usuario!");
         }
 
         User user = new User();
@@ -33,7 +33,7 @@ public class UserService {
 
     public UserResponseDTO findById(Long id){
 
-        User user = userRepository.findById(id).orElseThrow(() -> new UserException("Usuario não encontrado!"));
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Usuario não encontrado!"));
 
         return new UserResponseDTO(user.getId(), user.getUsername(), user.getEmail());
     }
@@ -45,7 +45,7 @@ public class UserService {
     }
 
     public UserResponseDTO updateUser(Long id, UserRequestDTO userRequestDTO){
-        User user = userRepository.findById(id).orElseThrow(() -> new UserException("Usuario não encontrado!"));
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Usuario não encontrado!"));
 
         user.setUsername(userRequestDTO.username());
         user.setEmail(userRequestDTO.email());
@@ -55,7 +55,7 @@ public class UserService {
     }
 
     public void deleteUser(Long id){
-        User user = userRepository.findById(id).orElseThrow(() -> new UserException("Usuario não encontrado!"));
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Usuario não encontrado!"));
         userRepository.delete(user);
     }
 }
