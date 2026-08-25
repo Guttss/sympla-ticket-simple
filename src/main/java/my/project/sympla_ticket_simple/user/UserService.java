@@ -23,7 +23,7 @@ public class UserService {
 
         User user = new User();
         user.setUsername(userRequestDTO.username());
-        user.setPassword(passwordEncoder.encode(userRequestDTO.password())); // Criptografa a senha
+        user.setPassword(passwordEncoder.encode(userRequestDTO.password())); // Criptografia a senha
         user.setEmail(userRequestDTO.email());
 
         User userSaved = userRepository.save(user);
