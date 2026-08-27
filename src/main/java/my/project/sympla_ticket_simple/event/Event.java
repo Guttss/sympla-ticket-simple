@@ -22,16 +22,16 @@ public class Event {
     @Column(name="id")
     private Long id;
 
-    @Column(nullable=false)
+    @Column(nullable=false, length=100)
     private String name;
 
-    @Column(nullable=false)
+    @Column(nullable=false, columnDefinition = "TEXT")
     private String  description;
 
-    @Column(nullable=false)
+    @Column(name = "start_date", nullable=false)
     private LocalDateTime startDate;
 
-    @Column(nullable=false)
+    @Column(name = "end_date", nullable=false)
     private LocalDateTime endDate;
 
     @Column(name="created_at", nullable=false, updatable = false)
@@ -40,17 +40,7 @@ public class Event {
     @Column(name="updated_at")
     private LocalDateTime updatedAt;
 
-    @PrePersist
-    protected void prePersist() {
-        this.createdAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void preUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    @Column(nullable=false)
+    @Column(nullable=false, length=200)
     private String location;
 
     @Column(nullable=false)
@@ -62,6 +52,15 @@ public class Event {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable=false)
-    private EventEnum eventEnum;
+    private EventStatus status;
 
+    @PrePersist
+    protected void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void preUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }

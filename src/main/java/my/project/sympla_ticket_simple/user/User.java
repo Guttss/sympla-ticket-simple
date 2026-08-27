@@ -5,8 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import my.project.sympla_ticket_simple.event.Event;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="tb_users")
@@ -26,7 +29,7 @@ public class User {
     @Column(nullable=false, unique = true,length=150)
     private String email;
 
-    @Column(nullable=false)
+    @Column(nullable=false, length=254)
     private String password;
 
     @Column(name="created_at", nullable=false, updatable=false)
@@ -34,6 +37,9 @@ public class User {
 
     @Column(name="updated_at")
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "user")
+    private List<Event> events = new ArrayList<>();
 
     @PrePersist
     protected void prePersist() {

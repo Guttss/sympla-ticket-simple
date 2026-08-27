@@ -1,6 +1,6 @@
 package my.project.sympla_ticket_simple.event;
 
-public enum EventEnum {
+public enum EventStatus {
     DRAFT,
     PUBLISHED,
     CANCELLED,
