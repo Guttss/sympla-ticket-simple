@@ -1,6 +1,7 @@
 package my.project.sympla_ticket_simple.event;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -63,4 +64,5 @@ public class Event {
     protected void preUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
+
 }
