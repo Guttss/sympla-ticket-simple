@@ -1,5 +1,6 @@
 package my.project.sympla_ticket_simple.config;
 
+import my.project.sympla_ticket_simple.event.EventNotFoundException;
 import my.project.sympla_ticket_simple.user.EmailAlreadyInUseException;
 import my.project.sympla_ticket_simple.user.UserNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -18,5 +19,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(EmailAlreadyInUseException.class)
     public ResponseEntity<ErrorResponse> handleEmailAlreadyInUse(EmailAlreadyInUseException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(ex.getMessage(), HttpStatus.CONFLICT.value()));
+    }
+
+    @ExceptionHandler(EventNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleEventNotFound(Exception ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND.value()));
     }
 }

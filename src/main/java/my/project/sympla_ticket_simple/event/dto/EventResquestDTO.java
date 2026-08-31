@@ -14,4 +14,4 @@ public record EventResquestDTO(
         @NotBlank @Size(min = 10, max = 100) String location,
         @NotBlank String category,
         @NotNull Long userId
-) {}
+){}

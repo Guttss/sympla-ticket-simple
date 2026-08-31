@@ -2,11 +2,9 @@ package my.project.sympla_ticket_simple.event.dto;
 
 import my.project.sympla_ticket_simple.event.EventStatus;
 
-
 import java.time.LocalDateTime;
 
 public record EventResponseDTO(
-    
     Long id,
     String name,
     String description,
@@ -16,5 +14,4 @@ public record EventResponseDTO(
     String category,
     Long userId,
     EventStatus status
-){
-}
+){}

@@ -18,7 +18,7 @@ public class EventService {
     private final UserRepository userRepository;
 
     public EventResponseDTO createEvent(EventResquestDTO eventResquestDTO) {
-        User user = userRepository.findById(eventResquestDTO.userId()).orElseThrow(() -> new UserNotFoundException("User not found"));
+        User user = userRepository.findById(eventResquestDTO.userId()).orElseThrow(() -> new UserNotFoundException("Usuario não encontrado!"));
 
         Event event = new Event();
         event.setUser(user);
@@ -31,9 +31,25 @@ public class EventService {
         event.setCategory(eventResquestDTO.category());
         Event eventSaved = eventRepository.save(event);
 
-        return new EventResponseDTO(eventSaved.getId(), eventSaved.getName(), eventSaved.getDescription(),
-                                    eventSaved.getStartDate(), eventSaved.getEndDate(),
-                                    eventSaved.getLocation(), eventSaved.getCategory(), eventSaved.getUser().getId(),
-                                    eventSaved.getStatus());
+        return toResponseDTO(eventSaved);
+    }
+
+    public EventResponseDTO findById(Long id) {
+
+        Event event = eventRepository.findById(id).orElseThrow(() -> new EventNotFoundException("Evento não existente!"));
+
+        return toResponseDTO(event);
+    }
+
+    public List<EventResponseDTO> findAll() {
+        List<Event> events = eventRepository.findAll();
+
+        return events.stream().map(this::toResponseDTO).toList();
+    }
+
+    private EventResponseDTO toResponseDTO(Event event) {
+        return new EventResponseDTO(event.getId(), event.getName(), event.getDescription(), event.getStartDate(),
+                event.getEndDate(), event.getLocation(), event.getCategory(),
+                event.getUser().getId(), event.getStatus());
     }
 }

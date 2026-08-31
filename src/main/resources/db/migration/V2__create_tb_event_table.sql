@@ -11,6 +11,5 @@ CREATE TABLE tb_events(
     status VARCHAR(50) NOT NULL,
     user_id BIGINT NOT NULL,
 
-
     CONSTRAINT fk_events_users FOREIGN KEY (user_id) REFERENCES tb_users(id)
 );

@@ -28,7 +28,7 @@ public class UserService {
 
         User userSaved = userRepository.save(user);
 
-        return new UserResponseDTO(userSaved.getId(),  userSaved.getUsername(), userSaved.getEmail());
+        return toUserResponseDTO(userSaved);
     }
 
     public UserResponseDTO findById(Long id){
@@ -41,7 +41,7 @@ public class UserService {
     public List<UserResponseDTO> findAll(){
         List<User> users = userRepository.findAll();
 
-        return users.stream().map(user -> new UserResponseDTO(user.getId(), user.getUsername(), user.getEmail())).toList();
+        return users.stream().map(this::toUserResponseDTO).toList();
     }
 
     public UserResponseDTO updateUser(Long id, UserRequestDTO userRequestDTO){
@@ -51,11 +51,15 @@ public class UserService {
         user.setEmail(userRequestDTO.email());
         User userSaved = userRepository.save(user);
 
-        return new UserResponseDTO(userSaved.getId(),  userSaved.getUsername(), userSaved.getEmail());
+        return toUserResponseDTO(userSaved);
     }
 
     public void deleteUser(Long id){
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Usuario não encontrado!"));
         userRepository.delete(user);
+    }
+
+    private UserResponseDTO toUserResponseDTO(User user){
+        return new UserResponseDTO(user.getId(), user.getUsername(), user.getEmail());
     }
 }
