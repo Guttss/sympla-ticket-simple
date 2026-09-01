@@ -3,6 +3,7 @@ package my.project.sympla_ticket_simple.event;
 import lombok.RequiredArgsConstructor;
 import my.project.sympla_ticket_simple.event.dto.EventResponseDTO;
 import my.project.sympla_ticket_simple.event.dto.EventResquestDTO;
+import my.project.sympla_ticket_simple.shared.BusinessException;
 import my.project.sympla_ticket_simple.user.User;
 import my.project.sympla_ticket_simple.user.UserNotFoundException;
 import my.project.sympla_ticket_simple.user.UserRepository;
@@ -45,6 +46,33 @@ public class EventService {
         List<Event> events = eventRepository.findAll();
 
         return events.stream().map(this::toResponseDTO).toList();
+    }
+
+    public EventResponseDTO updateEvent(Long id, EventResquestDTO eventResquestDTO) {
+        Event event =  eventRepository.findById(id).orElseThrow(() -> new EventNotFoundException("Evento não existente!"));
+
+        if(event.getStatus().equals(EventStatus.PUBLISHED) || event.getStatus().equals(EventStatus.COMPLETED)) {
+            throw new BusinessException("Eventos publicados ou finalizados não podem ser alterados!");
+        }
+
+        event.setName(eventResquestDTO.name());
+        event.setDescription(eventResquestDTO.description());
+        event.setStartDate(eventResquestDTO.startDate());
+        event.setEndDate(eventResquestDTO.endDate());
+        event.setLocation(eventResquestDTO.location());
+        event.setCategory(eventResquestDTO.category());
+        Event eventUpdated = eventRepository.save(event);
+        return toResponseDTO(eventUpdated);
+    }
+
+    public void deleteEvent(Long id) {
+        Event event = eventRepository.findById(id).orElseThrow(() -> new EventNotFoundException("Evento não existente!"));
+
+        if(event.getStatus().equals(EventStatus.PUBLISHED) || event.getStatus().equals(EventStatus.COMPLETED)) {
+            throw new BusinessException("Eventos publicados ou finalizados não podem ser alterados!");
+        }
+
+        eventRepository.delete(event);
     }
 
     private EventResponseDTO toResponseDTO(Event event) {
