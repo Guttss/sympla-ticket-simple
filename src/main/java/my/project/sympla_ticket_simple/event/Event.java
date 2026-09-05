@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import my.project.sympla_ticket_simple.ticket.Ticket;
 import my.project.sympla_ticket_simple.user.User;
 
 import java.time.LocalDateTime;
@@ -49,6 +50,10 @@ public class Event {
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @OneToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "ticket_id", nullable = false)
+    private Ticket ticket;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable=false)
